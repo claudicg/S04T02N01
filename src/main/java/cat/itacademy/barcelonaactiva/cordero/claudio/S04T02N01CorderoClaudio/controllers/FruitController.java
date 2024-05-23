@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cat.itacademy.barcelonaactiva.cordero.claudio.S04T02N01CorderoClaudio.exceptions.FruitNotFoundException;
 import cat.itacademy.barcelonaactiva.cordero.claudio.S04T02N01CorderoClaudio.model.DTO.FruitDTO;
 import cat.itacademy.barcelonaactiva.cordero.claudio.S04T02N01CorderoClaudio.model.DTO.FruitResponse;
 import cat.itacademy.barcelonaactiva.cordero.claudio.S04T02N01CorderoClaudio.model.services.FruitService;
@@ -95,7 +96,11 @@ public class FruitController{
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 		
-		fruitService.delete(id);
+		try {
+			fruitService.delete(id);
+		} catch (FruitNotFoundException e) {
+			System.out.println(e);
+		}
 		
 	    FruitResponse response = new FruitResponse();
 	    response.setMessage(Constants.Messages.DELETED);

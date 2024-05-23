@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cat.itacademy.barcelonaactiva.cordero.claudio.S04T02N01CorderoClaudio.exceptions.FruitNotFoundException;
 import cat.itacademy.barcelonaactiva.cordero.claudio.S04T02N01CorderoClaudio.model.DTO.FruitDTO;
 import cat.itacademy.barcelonaactiva.cordero.claudio.S04T02N01CorderoClaudio.model.domain.FruitEntity;
 import cat.itacademy.barcelonaactiva.cordero.claudio.S04T02N01CorderoClaudio.model.repositories.FruitRepository;
+import cat.itacademy.barcelonaactiva.cordero.claudio.S04T02N01CorderoClaudio.utils.Constants;
 
 
 
@@ -34,9 +36,15 @@ public class FruitServiceImpl implements FruitService{
 	}
 	
 	@Override
-	public void delete(String id) {
+	public void delete(String id) throws FruitNotFoundException{ 
 		
-		fruitsRepository.deleteById(id);
+		FruitEntity fruit = fruitsRepository.findById(id).orElse(null);
+
+		 if (fruit != null){
+			 fruitsRepository.deleteById(id);
+		 }else{
+			 throw new FruitNotFoundException(Constants.Messages.FOUND);
+		 }           
 	}
 
 	@Override
